@@ -86,6 +86,15 @@ class SettingsPage extends React.PureComponent {
     lbry.setClientSetting("showNsfw", event.target.checked);
   }
 
+  onMaxKeyFeeAmountFieldChange(event) {
+    const value = event.target.value;
+    if (value === "") return;
+
+    const max_key_fee = parseFloat(value);
+
+    this.setDaemonSetting("max_key_fee", max_key_fee);
+  }
+
   // onLanguageChange(language) {
   //   lbry.setClientSetting('language', language);
   //   i18n.setLocale(language);
@@ -273,6 +282,28 @@ class SettingsPage extends React.PureComponent {
                 defaultChecked={this.state.language == "rs"}
               />
             </div>
+          </div>
+        </section>
+
+        <section className="card">
+          <div className="card__content">
+            <h3>{__("Max Fee")}</h3>
+          </div>
+          <div className="card__content">
+            {daemonSettings &&
+              daemonSettings.max_key_fee &&
+              <FormRow
+                type="number"
+                min="0"
+                step="1"
+                defaultValue={daemonSettings.max_key_fee}
+                placeholder="10"
+                className="form-field__input--inline"
+                onChange={this.onMaxKeyFeeAmountFieldChange.bind(this)}
+                helper={__(
+                  "This allows you to set your maximum download fee. It will prevent you from downloading any files where the fee is higher than this amount."
+                )}
+              />}
           </div>
         </section>
 
